@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>The Recommended Approach</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-2: #1a1a26;
+            --border: #2a2a3a;
+            --text: #e4e4ef;
+            --text-muted: #8888a0;
+            --text-dim: #5a5a72;
+            --accent: #7c5cfc;
+            --accent-light: #9b7fff;
+            --accent-2: #00d4aa;
+            --accent-3: #ff6b8a;
+            --orange: #e8913a;
+            --blue: #5b8def;
+            --teal: #3bbfa0;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        body {
+            padding: 48px 32px;
+        }
+
+        .header {
+            margin-bottom: 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .header-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .header-content p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+        }
+
+        .back-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--accent-light);
+        }
+
+        .columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 28px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-2);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        table th {
+            text-align: left;
+            padding: 12px;
+            background-color: var(--surface-2);
+            border-bottom: 2px solid var(--border);
+            font-weight: 600;
+            color: var(--accent-2);
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table code {
+            background-color: var(--surface-2);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9em;
+            color: var(--accent-light);
+        }
+
+        .workflow-steps {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .workflow-steps li {
+            counter-increment: step-counter;
+            margin-bottom: 16px;
+            padding-left: 40px;
+            position: relative;
+            color: var(--text);
+        }
+
+        .workflow-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .code-block {
+            background-color: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            color: var(--text-muted);
+            margin: 16px 0;
+            line-height: 1.5;
+        }
+
+        .callout {
+            background-color: rgba(232, 145, 58, 0.1);
+            border-left: 4px solid var(--orange);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            margin: 20px 0;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            color: var(--orange);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .callout p {
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .security-list {
+            list-style: none;
+        }
+
+        .security-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .security-list li:last-child {
+            border-bottom: none;
+        }
+
+        .security-list strong {
+            color: var(--accent-2);
+            font-weight: 600;
+        }
+
+        .review-steps {
+            list-style: none;
+            counter-reset: review-counter;
+        }
+
+        .review-steps li {
+            counter-increment: review-counter;
+            margin-bottom: 16px;
+            padding-left: 40px;
+            position: relative;
+            color: var(--text);
+        }
+
+        .review-steps li::before {
+            content: counter(review-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background-color: var(--blue);
+            color: white;
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .resources-section {
+            margin-bottom: 48px;
+        }
+
+        .resources-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--accent);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .resource-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .resource-card:hover {
+            background-color: var(--surface-2);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .resource-card .icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .resource-card .title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+
+        .resource-card .desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .footer {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .approval-note {
+            background-color: rgba(91, 141, 239, 0.1);
+            border-left: 4px solid var(--blue);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            margin: 16px 0;
+        }
+
+        .approval-note p {
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        /* Process flow section */
+        .process-flow {
+            display: flex;
+            gap: 16px;
+            margin: 24px 0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .process-step {
+            flex: 1;
+            min-width: 140px;
+            background-color: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            text-align: center;
+        }
+
+        .process-step-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .process-step-name {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .process-step-time {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .process-step-action {
+            font-size: 0.85rem;
+            color: var(--accent-2);
+            font-weight: 500;
+        }
+
+        .process-arrow {
+            color: var(--accent);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .when-to-boxes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .when-box {
+            background-color: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+        }
+
+        .when-box h4 {
+            color: var(--accent-2);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .when-box p {
+            font-size: 0.9rem;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        /* Full-width card above columns */
+        .full-width-card {
+            margin-bottom: 48px;
+        }
+
+        .full-width-card.card {
+            margin-bottom: 48px;
+        }
+
+        /* Print styles */
+        @media print {
+            html, body {
+                background-color: white;
+                color: #000;
+            }
+
+            body {
+                padding: 40px;
+            }
+
+            .card, .resource-card {
+                background-color: white;
+                color: black;
+                border: 1px solid #ccc;
+                page-break-inside: avoid;
+            }
+
+            .code-block {
+                background-color: #f5f5f5;
+                color: #333;
+                border: 1px solid #ddd;
+            }
+
+            .callout {
+                background-color: #fff8f0;
+                border-left-color: #ff6b00;
+            }
+
+            .callout-title {
+                color: #ff6b00;
+            }
+
+            a {
+                color: #0066cc;
+            }
+
+            .header {
+                border-bottom: 2px solid #000;
+                margin-bottom: 32px;
+                padding-bottom: 20px;
+            }
+
+            .section h3 {
+                color: #333;
+            }
+
+            table th {
+                background-color: #f0f0f0;
+                color: #000;
+            }
+
+            table td {
+                color: #000;
+            }
+
+            .columns {
+                column-count: 2;
+                column-gap: 40px;
+            }
+
+            .resource-card {
+                break-inside: avoid;
+            }
+
+            .process-step, .when-box {
+                background-color: #f5f5f5;
+                color: black;
+                border: 1px solid #ccc;
+            }
+
+            .process-step-number, .process-step-name {
+                color: #333;
+            }
+
+            .process-step-time, .process-step-action {
+                color: #666;
+            }
+
+            .when-box h4 {
+                color: #333;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .columns {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content h1 {
+                font-size: 2rem;
+            }
+
+            .when-to-boxes {
+                grid-template-columns: 1fr;
+            }
+
+            .process-flow {
+                flex-direction: column;
+            }
+
+            .process-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>The Recommended Approach</h1>
+            <p>One process for every non-trivial ticket. Research → Plan → Implement → Review.</p>
+        </div>
+        <a href="index.html" class="back-link">← Back to AI-SDLC main site</a>
+    </div>
+
+    <!-- Full-width process overview section -->
+    <div class="card full-width-card">
+        <h2>🎯 The Process at a Glance</h2>
+
+        <div class="process-flow">
+            <div class="process-step">
+                <div class="process-step-number">1</div>
+                <div class="process-step-name">Research</div>
+                <div class="process-step-time">15–30 min</div>
+                <div class="process-step-action">Understand before change</div>
+            </div>
+            <div class="process-arrow">→</div>
+            <div class="process-step">
+                <div class="process-step-number">2</div>
+                <div class="process-step-name">Plan</div>
+                <div class="process-step-time">15–30 min</div>
+                <div class="process-step-action">Ordered steps</div>
+            </div>
+            <div class="process-arrow">→</div>
+            <div class="process-step">
+                <div class="process-step-number">3</div>
+                <div class="process-step-name">Implement</div>
+                <div class="process-step-time">30–90 min</div>
+                <div class="process-step-action">Execute with harness</div>
+            </div>
+            <div class="process-arrow">→</div>
+            <div class="process-step">
+                <div class="process-step-number">4</div>
+                <div class="process-step-name">Review</div>
+                <div class="process-step-time">15–30 min</div>
+                <div class="process-step-action">Validate intent</div>
+            </div>
+        </div>
+
+        <p style="margin: 24px 0; color: var(--text-muted);">This is the Research–Plan–Implement–Review (RPIR) flow. Use it for any ticket that touches more than one file or requires understanding existing code. For trivial one-file changes, skip straight to implement.</p>
+
+        <div class="when-to-boxes">
+            <div class="when-box">
+                <h4>Use when</h4>
+                <p>Multi-file changes, refactoring, new features, brownfield extraction, anything touching unfamiliar code</p>
+            </div>
+            <div class="when-box">
+                <h4>Skip when</h4>
+                <p>Single-file bug fixes, config changes, copy edits, or changes where you already know exactly what to do</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Two-column grid with left and right columns -->
+    <div class="columns">
+        <!-- Left Column: The Four Steps -->
+        <div class="card">
+            <h2>📋 The Four Steps</h2>
+
+            <div class="section">
+                <h3>Step 1 — Research (15–30 min)</h3>
+                <p style="margin-bottom: 12px; color: var(--text-muted);">Fresh AI context. Full codebase access. Goal: understand before you change.</p>
+                <p style="margin-bottom: 12px; color: var(--text-muted); font-size: 0.9rem;">Prompt examples:</p>
+                <div class="code-block">@workspace Trace the [feature] flow from UI to database.
+Map every file, class, and method involved. List
+dependencies and potential risks.</div>
+                <div class="code-block">@workspace What would break if I changed [X]?
+List all callers and downstream effects.</div>
+                <p style="margin-top: 16px; color: var(--text-muted); font-size: 0.9rem;">Artefact: <strong style="color: var(--text);">research.md</strong> — dense summary of architecture, dependencies, risks. (~1–2 pages)</p>
+            </div>
+
+            <div class="section">
+                <h3>Step 2 — Plan (15–30 min)</h3>
+                <p style="margin-bottom: 12px; color: var(--text-muted);">Fresh AI context. Input: research.md only (information diet). Goal: ordered steps before touching code.</p>
+                <p style="margin-bottom: 12px; color: var(--text-muted); font-size: 0.9rem;">Prompt example:</p>
+                <div class="code-block">Given this research document, create an implementation
+plan with ordered steps. Each step must include:
+- What to change and where
+- A verification command (build, test, or lint)
+- What could go wrong</div>
+                <p style="margin-top: 16px; color: var(--text-muted); font-size: 0.9rem;">Artefact: <strong style="color: var(--text);">plan.md</strong> — numbered steps with verification commands + risk register</p>
+            </div>
+
+            <div class="section">
+                <h3>Step 3 — Implement (30–90 min)</h3>
+                <p style="margin-bottom: 12px; color: var(--text-muted);">Agent mode or coding agent. Input: plan.md. Harnesses running after every change.</p>
+                <p style="margin-bottom: 12px; color: var(--text-muted); font-size: 0.9rem;">Prompt example:</p>
+                <div class="code-block">Follow this plan step by step. After each change:
+run the build, run the tests, fix any failures before
+moving to the next step. Do not skip steps.</div>
+                <p style="margin-top: 16px; color: var(--text-muted); font-size: 0.9rem;">Artefact: <strong style="color: var(--text);">Working code</strong>, all tests green, <strong style="color: var(--text);">handoff.md</strong> if handing off to someone else</p>
+            </div>
+
+            <div class="section">
+                <h3>Step 4 — Review (15–30 min)</h3>
+                <p style="margin-bottom: 12px; color: var(--text-muted);">Human + AI review. Validate against the original intent, not just the code.</p>
+                <p style="margin-bottom: 12px; color: var(--text-muted); font-size: 0.9rem;">Prompt example:</p>
+                <div class="code-block">Review this PR against the original plan.md.
+Flag any deviations, missing test coverage,
+or architectural concerns.</div>
+                <p style="margin-top: 16px; color: var(--text-muted); font-size: 0.9rem;">Artefact: <strong style="color: var(--text);">Approved PR with ADC record</strong></p>
+            </div>
+        </div>
+
+        <!-- Right Column: Checklist and Roles -->
+        <div class="card">
+            <h2>✅ PR Checklist</h2>
+
+            <div class="section">
+                <p style="margin-bottom: 16px; color: var(--text-muted);">Before merging, verify:</p>
+                <ul class="security-list">
+                    <li>All tests pass (unit + E2E if applicable)</li>
+                    <li>Build succeeds in CI</li>
+                    <li><code>research.md</code> and <code>plan.md</code> committed to ADC folder</li>
+                    <li>Provenance tagged: AI-generated code marked EXTRACTED vs INFERRED</li>
+                    <li>No secrets, credentials, or magic strings introduced</li>
+                    <li>Copilot added as PR reviewer (comments addressed or acknowledged)</li>
+                    <li>At least one human reviewer approved</li>
+                    <li>Architecture constraints in <code>copilot-instructions.md</code> not violated</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>Roles & Responsibilities</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Role</th>
+                                <th>Responsibility</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Developer</strong></td>
+                                <td>Runs the RPIR flow. Owns the research and plan quality.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tech Lead</strong></td>
+                                <td>Reviews plan.md before implementation starts. Validates architectural decisions.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Reviewer</strong></td>
+                                <td>Reviews PR against plan.md intent, not just code style. Checks ADC record.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Agent (Copilot)</strong></td>
+                                <td>Executes within constraints. Self-corrects from harness feedback. Never approves — only suggests.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Quick Commands</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Command</th>
+                                <th>When to Use</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>@workspace /explain #file</code></td>
+                                <td>Research phase — understand a file's role</td>
+                            </tr>
+                            <tr>
+                                <td><code>@workspace</code> + question</td>
+                                <td>Research phase — explore architecture</td>
+                            </tr>
+                            <tr>
+                                <td><code>/tests #file</code></td>
+                                <td>Before implementing — establish baseline coverage</td>
+                            </tr>
+                            <tr>
+                                <td><code>/fix #selection</code></td>
+                                <td>Implement phase — fix errors inline</td>
+                            </tr>
+                            <tr>
+                                <td><code>/doc #function</code></td>
+                                <td>Post-implement — document what you built</td>
+                            </tr>
+                            <tr>
+                                <td>Agent mode (Ctrl+I)</td>
+                                <td>Implement phase — multi-file changes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">⚡ Key Principle</div>
+                <p>Each phase gets a fresh context with only the artefacts from the previous phase. Don't carry a long conversation through all four steps — start fresh each time. This is the 'information diet' that prevents hallucination and drift.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resources Section -->
+    <div class="resources-section">
+        <h2>Self-Paced Resources</h2>
+        <div class="resources-grid">
+            <a href="https://github.com/skills/build-applications-w-copilot-agent-mode" class="resource-card" target="_blank" rel="noopener noreferrer">
+                <div class="icon">🔗</div>
+                <div class="title">Build Applications with Copilot Agent Mode</div>
+                <div class="desc">Learn how to use agent mode for multi-file implementations</div>
+            </a>
+            <a href="https://github.com/skills/copilot-code-review" class="resource-card" target="_blank" rel="noopener noreferrer">
+                <div class="icon">🔗</div>
+                <div class="title">Copilot Code Review</div>
+                <div class="desc">Interactive GitHub Skills course on code review</div>
+            </a>
+            <a href="https://github.com/skills/modernize-your-legacy-code-with-github-copilot" class="resource-card" target="_blank" rel="noopener noreferrer">
+                <div class="icon">🔗</div>
+                <div class="title">Modernize Legacy Code with Copilot</div>
+                <div class="desc">Research and planning for brownfield extraction</div>
+            </a>
+            <a href="https://github.com/skills/customize-your-github-copilot-experience" class="resource-card" target="_blank" rel="noopener noreferrer">
+                <div class="icon">🔗</div>
+                <div class="title">Customize Your Copilot Experience</div>
+                <div class="desc">Build custom agents and control copilot-instructions.md</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Part of the AI-SDLC workshop materials · See also: <a href="onepager-testing-review.html">Testing & Review</a> · <a href="onepager-agent-mode.html">Agent Mode & Implementation</a> · <a href="onepager-planning.html">Planning & Design</a></p>
+    </div>
+</body>
+</html>
