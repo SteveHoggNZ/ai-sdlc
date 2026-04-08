@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Testing & Review with AI Agents</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-2: #1a1a26;
+            --border: #2a2a3a;
+            --text: #e4e4ef;
+            --text-muted: #8888a0;
+            --text-dim: #5a5a72;
+            --accent: #7c5cfc;
+            --accent-light: #9b7fff;
+            --accent-2: #00d4aa;
+            --accent-3: #ff6b8a;
+            --orange: #e8913a;
+            --blue: #5b8def;
+            --teal: #3bbfa0;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        body {
+            padding: 48px 32px;
+        }
+
+        .header {
+            margin-bottom: 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .header-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .header-content p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+        }
+
+        .back-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--accent-light);
+        }
+
+        .columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 28px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-2);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        table th {
+            text-align: left;
+            padding: 12px;
+            background-color: var(--surface-2);
+            border-bottom: 2px solid var(--border);
+            font-weight: 600;
+            color: var(--accent-2);
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table code {
+            background-color: var(--surface-2);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9em;
+            color: var(--accent-light);
+        }
+
+        .workflow-steps {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .workflow-steps li {
+            counter-increment: step-counter;
+            margin-bottom: 16px;
+            padding-left: 40px;
+            position: relative;
+            color: var(--text);
+        }
+
+        .workflow-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .code-block {
+            background-color: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            color: var(--text-muted);
+            margin: 16px 0;
+            line-height: 1.5;
+        }
+
+        .callout {
+            background-color: rgba(232, 145, 58, 0.1);
+            border-left: 4px solid var(--orange);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            margin: 20px 0;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            color: var(--orange);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .callout p {
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .security-list {
+            list-style: none;
+        }
+
+        .security-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .security-list li:last-child {
+            border-bottom: none;
+        }
+
+        .security-list strong {
+            color: var(--accent-2);
+            font-weight: 600;
+        }
+
+        .review-steps {
+            list-style: none;
+            counter-reset: review-counter;
+        }
+
+        .review-steps li {
+            counter-increment: review-counter;
+            margin-bottom: 16px;
+            padding-left: 40px;
+            position: relative;
+            color: var(--text);
+        }
+
+        .review-steps li::before {
+            content: counter(review-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background-color: var(--blue);
+            color: white;
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .resources-section {
+            margin-bottom: 48px;
+        }
+
+        .resources-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--accent);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .resource-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .resource-card:hover {
+            background-color: var(--surface-2);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .resource-card .icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .resource-card .title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+
+        .resource-card .desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .footer {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .approval-note {
+            background-color: rgba(91, 141, 239, 0.1);
+            border-left: 4px solid var(--blue);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            margin: 16px 0;
+        }
+
+        .approval-note p {
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        /* Print styles */
+        @media print {
+            html, body {
+                background-color: white;
+                color: #000;
+            }
+
+            body {
+                padding: 40px;
+            }
+
+            .card, .resource-card {
+                background-color: white;
+                color: black;
+                border: 1px solid #ccc;
+                page-break-inside: avoid;
+            }
+
+            .code-block {
+                background-color: #f5f5f5;
+                color: #333;
+                border: 1px solid #ddd;
+            }
+
+            .callout {
+                background-color: #fff8f0;
+                border-left-color: #ff6b00;
+            }
+
+            .callout-title {
+                color: #ff6b00;
+            }
+
+            a {
+                color: #0066cc;
+            }
+
+            .header {
+                border-bottom: 2px solid #000;
+                margin-bottom: 32px;
+                padding-bottom: 20px;
+            }
+
+            .section h3 {
+                color: #333;
+            }
+
+            table th {
+                background-color: #f0f0f0;
+                color: #000;
+            }
+
+            table td {
+                color: #000;
+            }
+
+            .columns {
+                column-count: 2;
+                column-gap: 40px;
+            }
+
+            .resource-card {
+                break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .columns {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Testing & Review with AI Agents</h1>
+            <p>Practical quick reference for AI-assisted test generation, code review, and security scanning.</p>
+        </div>
+        <a href="index.html" class="back-link">← Back to AI-SDLC main site</a>
+    </div>
+
+    <div class="columns">
+        <!-- Left Column: Testing -->
+        <div class="card">
+            <h2>🧪 Testing with Copilot</h2>
+
+            <div class="section">
+                <h3>Test Generation — The Basics</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Command</th>
+                                <th>What It Does</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>/tests</code></td>
+                                <td>Generate unit tests for selected code. Infers framework (Jest, pytest, xUnit).</td>
+                            </tr>
+                            <tr>
+                                <td><code>/tests #file</code></td>
+                                <td>Generate tests for an entire file</td>
+                            </tr>
+                            <tr>
+                                <td>Agent mode</td>
+                                <td>"List edge cases for X, then write tests" — safer than just "write tests"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Test-First Workflow (Recommended)</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">A 3-step mini-recipe:</p>
+                <ol class="workflow-steps">
+                    <li>Ask agent to list edge cases and failure modes</li>
+                    <li>Ask agent to write tests that would FAIL if those edge cases are mishandled</li>
+                    <li>Then implement — agent uses test output as feedback loop</li>
+                </ol>
+                <p style="margin-top: 20px; margin-bottom: 16px; font-size: 0.9rem; color: var(--text-muted);">Example prompt:</p>
+                <div class="code-block">List edge cases for the payment flow, then write tests
+that would fail if any edge case is mishandled.
+Use xUnit. Include: empty cart, duplicate items,
+out-of-stock, concurrent modification.</div>
+            </div>
+
+            <div class="section">
+                <h3>Security Testing</h3>
+                <ul class="security-list">
+                    <li><strong>CodeQL (SAST):</strong> Enable in repo Settings → Code Security. Runs on every push and PR automatically.</li>
+                    <li><strong>Secret Scanning:</strong> Via GitHub MCP Server — detects leaked credentials.</li>
+                    <li><strong>DAST:</strong> StackHawk and Aikido offer Copilot custom agents for dynamic security testing.</li>
+                </ul>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">⚠️ The Self-Rating Trap</div>
+                <p>The AI that wrote the code shouldn't be the only one validating it. Use physics (test runners, linters, type checkers) as your independent verification. Always run the tests — don't just read them.</p>
+            </div>
+        </div>
+
+        <!-- Right Column: Review -->
+        <div class="card">
+            <h2>👀 Code Review with Copilot</h2>
+
+            <div class="section">
+                <h3>Automated PR Review</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">How to enable:</p>
+                <ol class="review-steps">
+                    <li>Open any Pull Request</li>
+                    <li>Go to Reviewers → Select "Copilot"</li>
+                    <li>Copilot analyzes the diff, leaves inline comments within minutes</li>
+                </ol>
+                <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">Comments cover: bugs, performance, style, security concerns.</p>
+                <div class="approval-note">
+                    <p><strong>Important:</strong> Copilot reviews leave comments, never approvals. The human always has final say.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Coding Agent PRs</h3>
+                <p style="margin-bottom: 12px;">When the coding agent opens a PR:</p>
+                <ul style="list-style: disc; padding-left: 20px; color: var(--text);">
+                    <li style="margin-bottom: 8px;">Includes summary of changes and reasoning</li>
+                    <li style="margin-bottom: 8px;">Shows full reasoning trace via Copilot session link</li>
+                    <li>Review like any other PR — same standards apply</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>Custom Review Agents</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">Create <code style="background-color: var(--surface-2); padding: 2px 6px; border-radius: 4px;">.agent.md</code> files for domain-specific review:</p>
+                <ul style="list-style: disc; padding-left: 20px; color: var(--text); margin-bottom: 16px;">
+                    <li style="margin-bottom: 8px;"><strong>Accessibility:</strong> "Review all CSS changes for WCAG 2.1 AA compliance"</li>
+                    <li style="margin-bottom: 8px;"><strong>Performance:</strong> "Flag any N+1 query patterns in database calls"</li>
+                    <li><strong>Compliance:</strong> "Check all API endpoints have proper authorization attributes"</li>
+                </ul>
+                <p style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted);">Example .agent.md:</p>
+                <div class="code-block"># Security Review Agent
+Review all changes for:
+- SQL injection vulnerabilities
+- Missing input validation
+- Hardcoded credentials or secrets
+- Missing authorization checks on API endpoints</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resources Section -->
+    <div class="resources-section">
+        <h2>Self-Paced Resources</h2>
+        <div class="resources-grid">
+            <a href="https://github.com/skills/copilot-code-review" class="resource-card" target="_blank" rel="noopener noreferrer">
+                <div class="icon">🔗</div>
+                <div class="title">Copilot Code Review</div>
+                <div class="desc">Interactive GitHub Skills course on code review</div>
+            </a>
+            <a href="https://learn.microsoft.com/en-us/training/modules/create-unit-tests-using-github-copilot-tools/" class="resource-card" target="_blank" rel="noopener noreferrer">
+                <div class="icon">🔗</div>
+                <div class="title">Create Unit Tests with Copilot</div>
+                <div class="desc">Microsoft Learn module on test generation</div>
+            </a>
+            <a href="https://github.com/skills/secure-code-game" class="resource-card" target="_blank" rel="noopener noreferrer">
+                <div class="icon">🔗</div>
+                <div class="title">Secure Code Game</div>
+                <div class="desc">Hands-on security vulnerability challenge</div>
+            </a>
+            <a href="https://github.com/skills/introduction-to-codeql" class="resource-card" target="_blank" rel="noopener noreferrer">
+                <div class="icon">🔗</div>
+                <div class="title">Introduction to CodeQL</div>
+                <div class="desc">Learn static analysis for security scanning</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Part of the AI-SDLC workshop materials · See also: <a href="onepager-process.html">Your Process One-Pager</a> · <a href="onepager-steel-thread.html">Steel Thread Recipe</a></p>
+    </div>
+</body>
+</html>

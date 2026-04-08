@@ -891,6 +891,7 @@
       <button class="tab-btn" onclick="showPage('methodology')" role="tab">Steel Thread</button>
       <button class="tab-btn" onclick="showPage('aisdlc')" role="tab">Scale</button>
       <button class="tab-btn" onclick="showPage('sdlcmap')" role="tab">SDLC Map</button>
+      <button class="tab-btn" onclick="showPage('onepagers')" role="tab">📋 One-Pagers</button>
     </nav>
   </div>
 </header>
@@ -1086,6 +1087,12 @@
       <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.5rem;">
         <a href="cheat-sheet.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: rgba(124,92,252,0.1); border: 1px solid rgba(124,92,252,0.3); border-radius: var(--radius); color: var(--accent-light); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.2s;">&#128203; Cheat Sheets &amp; Bingo Card</a>
         <a href="comparison.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: rgba(232,145,58,0.1); border: 1px solid rgba(232,145,58,0.3); border-radius: var(--radius); color: var(--orange); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.2s;">&#9878; GitHub AI-SDLC vs AWS AI-DLC</a>
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.75rem;">
+        <a href="onepager-process.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2); border-radius: var(--radius); color: var(--accent-2); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: all 0.2s;">📄 Process One-Pager</a>
+        <a href="onepager-steel-thread.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(232,145,58,0.08); border: 1px solid rgba(232,145,58,0.2); border-radius: var(--radius); color: var(--orange); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: all 0.2s;">🔩 Steel Thread Recipe</a>
+        <a href="onepager-testing-review.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(124,92,252,0.08); border: 1px solid rgba(124,92,252,0.2); border-radius: var(--radius); color: var(--accent-light); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: all 0.2s;">🧪 Testing &amp; Review</a>
       </div>
     </section>
   </div>
@@ -3575,6 +3582,60 @@
 
       <div style="text-align: center; margin-top: 1.5rem;">
         <a href="sdlc-map.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.3); border-radius: var(--radius); color: var(--accent-2); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.2s;">&#128438; Open Full SDLC Map (printable) &rarr;</a>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE: ONE-PAGERS ═══════════ -->
+<div id="onepagers" class="page">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-badge">Quick Reference</div>
+      <h1><span class="gradient">One-Pagers</span></h1>
+      <p class="subtitle">Focused, printable reference sheets distilled from the workshop material. Each answers a specific question you can hand to your team or your exec.</p>
+    </section>
+
+    <section class="content-section">
+      <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
+
+        <a href="onepager-process.html" style="text-decoration: none;">
+          <div class="card" style="height: 100%; cursor: pointer;">
+            <div class="card-icon green">📄</div>
+            <h4 style="color: var(--accent-2);">Your Process — Microsoft Stack</h4>
+            <p>The executive summary. How the RPI flow (Research → Plan → Implement) works on GitHub/Microsoft. Side-by-side with AWS AI-DLC. Where each tool fits at every SDLC stage. What to start Monday.</p>
+            <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 600; color: var(--accent-2);">Answers: "How do we do this with our stack?" →</div>
+          </div>
+        </a>
+
+        <a href="onepager-steel-thread.html" style="text-decoration: none;">
+          <div class="card" style="height: 100%; cursor: pointer;">
+            <div class="card-icon orange">🔩</div>
+            <h4 style="color: var(--orange);">Steel Thread Recipe</h4>
+            <p>A worked example: extracting a service from a 200k-line .NET codebase using AI-DLC. The 5-step recipe, the artefacts at each step, and the "physics beat law" moment. Copy this pattern.</p>
+            <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 600; color: var(--orange);">Answers: "Show me a real example" →</div>
+          </div>
+        </a>
+
+        <a href="onepager-testing-review.html" style="text-decoration: none;">
+          <div class="card" style="height: 100%; cursor: pointer;">
+            <div class="card-icon">🧪</div>
+            <h4 style="color: var(--accent-light);">Testing & Review with Agents</h4>
+            <p>Practical quick reference for AI-assisted test generation, code review, and security scanning. Commands, workflows, custom review agents, and self-paced GitHub Skills links.</p>
+            <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 600; color: var(--accent-light);">Answers: "How do I use agents for review & testing?" →</div>
+          </div>
+        </a>
+
+      </div>
+
+      <div class="callout green" style="margin-top: 2rem;">
+        <p><strong>These are designed to be shared.</strong> Send a one-pager to your exec, print one for your squad, or use them as a reference during project time. Each stands alone — no prior context needed.</p>
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.5rem;">
+        <a href="cheat-sheet.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(124,92,252,0.08); border: 1px solid rgba(124,92,252,0.2); border-radius: var(--radius); color: var(--accent-light); text-decoration: none; font-size: 0.82rem; font-weight: 600;">📋 Cheat Sheets &amp; Bingo Card</a>
+        <a href="comparison.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(232,145,58,0.08); border: 1px solid rgba(232,145,58,0.2); border-radius: var(--radius); color: var(--orange); text-decoration: none; font-size: 0.82rem; font-weight: 600;">⚖ Full Comparison</a>
+        <a href="sdlc-map.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2); border-radius: var(--radius); color: var(--accent-2); text-decoration: none; font-size: 0.82rem; font-weight: 600;">🗺 SDLC Map</a>
       </div>
     </section>
   </div>
