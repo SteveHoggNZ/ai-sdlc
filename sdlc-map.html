@@ -59,23 +59,16 @@
   .phase-card::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
   }
-  .phase-card.plan::before { background: var(--blue); }
-  .phase-card.design::before { background: var(--accent); }
-  .phase-card.code::before { background: var(--accent-2); }
-  .phase-card.test::before { background: var(--yellow); }
-  .phase-card.deploy::before { background: var(--orange); }
-  .phase-card.operate::before { background: var(--accent-3); }
-  .phase-card.maintain::before { background: var(--teal); }
+  /* Maturity-based colours: ready=green, emerging=orange, preview=purple */
+  .phase-card.mat-ready::before { background: var(--accent-2); }
+  .phase-card.mat-emerging::before { background: var(--orange); }
+  .phase-card.mat-preview::before { background: var(--accent-light); }
 
   .phase-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
   .phase-num { font-size: 2rem; font-weight: 800; line-height: 1; }
-  .phase-card.plan .phase-num { color: var(--blue); }
-  .phase-card.design .phase-num { color: var(--accent); }
-  .phase-card.code .phase-num { color: var(--accent-2); }
-  .phase-card.test .phase-num { color: var(--yellow); }
-  .phase-card.deploy .phase-num { color: var(--orange); }
-  .phase-card.operate .phase-num { color: var(--accent-3); }
-  .phase-card.maintain .phase-num { color: var(--teal); }
+  .phase-card.mat-ready .phase-num { color: var(--accent-2); }
+  .phase-card.mat-emerging .phase-num { color: var(--orange); }
+  .phase-card.mat-preview .phase-num { color: var(--accent-light); }
   .phase-title { font-size: 1.15rem; font-weight: 700; }
   .phase-desc { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem; max-width: 700px; }
 
@@ -114,6 +107,21 @@
     .tools-grid { grid-template-columns: 1fr; }
   }
 
+  /* ── AWS comparison strip ── */
+  .aws-strip {
+    margin-top: 1rem; padding: 0.65rem 0.85rem; border-radius: var(--radius-sm);
+    background: rgba(232,145,58,0.06); border: 1px solid rgba(232,145,58,0.15);
+    font-size: 0.78rem; color: var(--text-dim); line-height: 1.5;
+  }
+  .aws-strip .aws-label {
+    font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--orange); margin-bottom: 0.25rem;
+  }
+  .aws-strip.strong { border-color: rgba(232,145,58,0.3); background: rgba(232,145,58,0.08); }
+  .aws-strip.weak { border-color: rgba(90,90,114,0.2); background: rgba(90,90,114,0.04); }
+  .aws-strip.none { border-color: rgba(90,90,114,0.1); background: rgba(90,90,114,0.02); }
+  .aws-strip.none .aws-label { color: var(--text-dim); }
+
   .legend { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin: 1.5rem 0; }
   .callout { background: rgba(124,92,252,0.08); border: 1px solid rgba(124,92,252,0.2); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
   .callout.green { background: rgba(0,212,170,0.08); border-color: rgba(0,212,170,0.2); }
@@ -135,6 +143,84 @@
     <p class="subtitle">Where AI fits at every stage of the software development lifecycle &mdash; what you can use today, what's emerging, and what to try on Monday morning. Focused on GitHub Copilot, but the patterns are transferable.</p>
   </section>
 
+  <!-- ── Executive Summary: How the stacks compare ── -->
+  <div style="padding: 2rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 2rem;">
+    <div style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--orange); margin-bottom: 0.5rem;">Executive Summary</div>
+    <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.02em;">How Does GitHub/Microsoft Compare to AWS AI-DLC?</h2>
+
+    <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1.25rem;"><a href="https://github.com/awslabs/aidlc-workflows" style="color: var(--orange);">AWS AI-DLC</a> is a productised workflow that enforces structured development phases via steering files, with particular strength in brownfield reverse engineering. When demonstrated, it looks like a single coherent system covering the entire SDLC. The reality is more nuanced &mdash; each approach has different strengths at different stages:</p>
+
+    <!-- Coverage comparison table -->
+    <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 1.5rem 0;">
+      <thead>
+        <tr>
+          <th style="padding: 0.6rem 0.75rem; text-align: left; border-bottom: 2px solid var(--border); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim);">SDLC Stage</th>
+          <th style="padding: 0.6rem 0.75rem; text-align: center; border-bottom: 2px solid var(--border); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-2);">GitHub / Microsoft</th>
+          <th style="padding: 0.6rem 0.75rem; text-align: center; border-bottom: 2px solid var(--border); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--orange);">AWS AI-DLC</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text);">Plan &amp; Requirements</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--orange);">Emerging</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--accent-2); font-weight: 600;">Strong</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text);">Design &amp; Architecture</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--orange);">Emerging</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--accent-2); font-weight: 600;">Strong</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text);">Code &amp; Implement</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--accent-2); font-weight: 600;">Mature</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--text-muted);">Present (uses underlying tool)</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text);">Test &amp; Validate</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--accent-2); font-weight: 600;">Mature</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--text-muted);">Basic (build &amp; test only)</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text);">Review &amp; Merge</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--accent-2); font-weight: 600;">Mature</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--text-muted);">Indirect (Mob ceremonies)</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text);">Build, Deploy &amp; Release</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--orange);">Emerging</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--text-dim);">Not implemented</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text);">Operate &amp; Monitor</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--accent-light);">Preview</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--text-dim);">Not implemented</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); color: var(--text);">Maintain &amp; Evolve</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--accent-2); font-weight: 600;">Mature</td>
+          <td style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--text-muted);">Partial (reverse eng. only)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1rem;">AI-DLC covers <strong style="color: var(--text);">Plan and Design deeply</strong>, has <strong style="color: var(--text);">Code and Test present but dependent on the underlying AI tool</strong>, and its <strong style="color: var(--text);">Deploy and Operate phases are admitted placeholders</strong>. The GitHub/Microsoft stack has the inverse profile &mdash; Code, Test, Review, and Maintain are mature, with Plan and Design catching up via <a href="https://github.com/github/spec-kit" style="color: var(--accent-2);">Spec Kit</a>.</p>
+
+    <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1rem;">A key distinction: AI-DLC is a <strong style="color: var(--text);">process layer</strong> that wraps around AI tools &mdash; it adds governance and structure, but still requires an AI coding tool underneath (and it lists GitHub Copilot as a supported agent). The GitHub/Microsoft stack provides both the <strong style="color: var(--text);">tools</strong> (Copilot, agent mode, coding agent, code review, Actions, MCP) and an emerging <strong style="color: var(--text);">structured workflow</strong> (Spec Kit). They solve different parts of the problem.</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.25rem 0;">
+      <div style="background: rgba(232,145,58,0.08); border: 1px solid rgba(232,145,58,0.2); border-radius: var(--radius-sm); padding: 1rem;">
+        <div style="font-size: 0.72rem; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem;">AI-DLC&rsquo;s strengths</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">Structured Inception phase, mandatory team review (Mob Elaboration), automatic brownfield reverse engineering, enforced workflow that prevents shortcuts. Compelling for organisations that need governance and process discipline imposed by the tooling.</p>
+      </div>
+      <div style="background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2); border-radius: var(--radius-sm); padding: 1rem;">
+        <div style="font-size: 0.72rem; font-weight: 700; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem;">GitHub/Microsoft&rsquo;s strengths</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">Deep tooling across more stages: agent mode, autonomous coding agent, automated PR review, GitHub Actions, custom agents (.agent.md), MCP for external integrations, and a growing ecosystem of 50+ community extensions via Spec Kit.</p>
+      </div>
+    </div>
+
+    <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0.75rem;">For a full side-by-side, see <a href="comparison.html" style="color: var(--accent-light);">GitHub AI-SDLC vs AWS AI-DLC</a>. The stage-by-stage detail below includes AI-DLC coverage notes on each card.</p>
+  </div>
+
   <div class="legend">
     <span class="maturity ready">&#9679; Ready &mdash; use today</span>
     <span class="maturity emerging">&#9679; Emerging &mdash; maturing fast</span>
@@ -144,7 +230,7 @@
   <div class="phase-grid">
 
     <!-- ════ 1. PLAN ════ -->
-    <div class="phase-card plan">
+    <div class="phase-card mat-emerging">
       <div class="phase-header">
         <div class="phase-num">01</div>
         <div>
@@ -175,10 +261,14 @@
           <div class="tool-prompt">"I need to add multi-tenancy. Please ask me 5 questions to understand what I need before suggesting an approach."</div>
         </div>
       </div>
+      <div class="aws-strip strong">
+        <div class="aws-label">AWS AI-DLC Coverage: Strong</div>
+        Requirements Analysis, User Stories, Mob Elaboration (mandatory team review). Brownfield projects get an automatic Reverse Engineering stage before requirements. This is AI-DLC's strongest phase.
+      </div>
     </div>
 
     <!-- ════ 2. DESIGN ════ -->
-    <div class="phase-card design">
+    <div class="phase-card mat-emerging">
       <div class="phase-header">
         <div class="phase-num">02</div>
         <div>
@@ -209,10 +299,14 @@
           <div class="tool-prompt">Create adc/YYYY-MM-DD--decision-name/ with research.md, plan.md, handoff.md</div>
         </div>
       </div>
+      <div class="aws-strip strong">
+        <div class="aws-label">AWS AI-DLC Coverage: Strong</div>
+        Application Design, Functional Design, NFR Design, Infrastructure Design &mdash; all as dedicated stages with mandatory Mob Construction review. Generates formal design documents at each stage.
+      </div>
     </div>
 
     <!-- ════ 3. CODE ════ -->
-    <div class="phase-card code">
+    <div class="phase-card mat-ready">
       <div class="phase-header">
         <div class="phase-num">03</div>
         <div>
@@ -253,10 +347,14 @@
           <div class="tool-prompt">.vscode/mcp.json: Connect to Postgres, Jira, Confluence, or custom internal APIs.</div>
         </div>
       </div>
+      <div class="aws-strip">
+        <div class="aws-label">AWS AI-DLC Coverage: Present</div>
+        Code Generation stage (two-part: plan then execute per unit). Steering files enforce the workflow but code generation itself relies on the underlying AI tool (Amazon Q, Copilot, etc.) &mdash; AI-DLC adds process, not coding capability.
+      </div>
     </div>
 
     <!-- ════ 4. TEST ════ -->
-    <div class="phase-card test">
+    <div class="phase-card mat-ready">
       <div class="phase-header">
         <div class="phase-num">04</div>
         <div>
@@ -287,12 +385,16 @@
           <div class="tool-prompt">Install StackHawk's .agent.md &rarr; generates CI workflow for dynamic scanning of your API endpoints.</div>
         </div>
       </div>
+      <div class="aws-strip">
+        <div class="aws-label">AWS AI-DLC Coverage: Basic</div>
+        Build and Test stage runs after all units complete. Validates the code compiles and tests pass, but doesn't generate tests or provide SAST/DAST tooling &mdash; that depends on the underlying AI tool and CI pipeline.
+      </div>
     </div>
 
     <!-- ════ 5. REVIEW ════ -->
-    <div class="phase-card deploy" style="--phase-color: var(--accent-3);">
+    <div class="phase-card mat-ready">
       <div class="phase-header">
-        <div class="phase-num" style="color: var(--accent-3);">05</div>
+        <div class="phase-num">05</div>
         <div>
           <div class="phase-title">Review &amp; Merge</div>
           <span class="maturity ready">Ready</span>
@@ -316,10 +418,14 @@
           <div class="tool-prompt">.github/.agent.md: "Review all CSS changes for WCAG 2.1 AA compliance."</div>
         </div>
       </div>
+      <div class="aws-strip">
+        <div class="aws-label">AWS AI-DLC Coverage: Indirect</div>
+        Mob Construction ceremonies serve as a review mechanism, but AI-DLC doesn't have a dedicated code review stage. No equivalent to Copilot's automated PR review or custom review agents.
+      </div>
     </div>
 
     <!-- ════ 6. DEPLOY ════ -->
-    <div class="phase-card deploy">
+    <div class="phase-card mat-emerging">
       <div class="phase-header">
         <div class="phase-num">06</div>
         <div>
@@ -345,10 +451,14 @@
           <div class="tool-prompt">"Generate a Terraform module for an Azure App Service with managed identity, connected to our existing Key Vault."</div>
         </div>
       </div>
+      <div class="aws-strip none">
+        <div class="aws-label">AWS AI-DLC Coverage: Placeholder</div>
+        Operations phase exists in the framework but is not yet implemented. No CI/CD pipeline generation, deployment strategy, or infrastructure-as-code capabilities in AI-DLC itself.
+      </div>
     </div>
 
     <!-- ════ 7. OPERATE ════ -->
-    <div class="phase-card operate">
+    <div class="phase-card mat-preview">
       <div class="phase-header">
         <div class="phase-num">07</div>
         <div>
@@ -374,10 +484,14 @@
           <div class="tool-prompt">"@mcp-datadog What's the P99 latency for the /api/cart endpoint over the last 24 hours?"</div>
         </div>
       </div>
+      <div class="aws-strip none">
+        <div class="aws-label">AWS AI-DLC Coverage: Placeholder</div>
+        Same as Deploy &mdash; the Operations phase is acknowledged but not yet implemented in the open-source framework.
+      </div>
     </div>
 
     <!-- ════ 8. MAINTAIN ════ -->
-    <div class="phase-card maintain">
+    <div class="phase-card mat-ready">
       <div class="phase-header">
         <div class="phase-num">08</div>
         <div>
@@ -407,6 +521,10 @@
           <div class="tool-desc">Pick one narrow vertical slice of a brownfield codebase, reverse-engineer the intent, extract it cleanly, and prove it works end-to-end. Then repeat.</div>
           <div class="tool-prompt">RPI: Research the flow &rarr; Plan the extraction &rarr; Implement in a fresh context with the handoff artefact.</div>
         </div>
+      </div>
+      <div class="aws-strip">
+        <div class="aws-label">AWS AI-DLC Coverage: Partial</div>
+        The Reverse Engineering stage (Inception phase) builds a semantic model of existing codebases &mdash; strong for understanding brownfield code. But AI-DLC doesn't have dedicated refactoring, dependency management, or ongoing evolution workflows.
       </div>
     </div>
 
