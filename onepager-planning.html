@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
-    <title>Testing & Review with AI Agents</title>
+    <title>Planning & Design with AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -436,151 +436,178 @@
 <body>
     <div class="header">
         <div class="header-content">
-            <h1>Testing & Review with AI Agents</h1>
-            <p>Practical quick reference for AI-assisted test generation, code review, and security scanning.</p>
+            <h1>Planning & Design with AI</h1>
+            <p>How structured planning works across AWS AI-DLC and GitHub — and why specs before code matters more than which tool you pick.</p>
         </div>
         <a href="index.html" class="back-link">← Back to AI-SDLC main site</a>
     </div>
 
     <div class="columns">
-        <!-- Left Column: Testing -->
+        <!-- Left Column: AWS AI-DLC -->
         <div class="card">
-            <h2>🧪 Testing with Copilot</h2>
+            <h2>📋 AWS AI-DLC — Structured Planning</h2>
 
             <div class="section">
-                <h3>Test Generation — The Basics</h3>
+                <h3>What AI-DLC Does Well</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">AI-DLC (<a href="https://github.com/awslabs/aidlc-workflows" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: underline;">github.com/awslabs/aidlc-workflows</a>) excels at the planning and design phases. It's a prescriptive workflow enforced by steering files — 20+ markdown rules that the AI agent must follow through mandatory phases.</p>
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
-                                <th>Command</th>
-                                <th>What It Does</th>
+                                <th>AI-DLC Phase</th>
+                                <th>What It Produces</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><code>/tests</code></td>
-                                <td>Generate unit tests for selected code. Infers framework (Jest, pytest, xUnit).</td>
+                                <td>Workspace Detection</td>
+                                <td>Automatically identifies brownfield vs greenfield</td>
                             </tr>
                             <tr>
-                                <td><code>/tests #file</code></td>
-                                <td>Generate tests for an entire file</td>
+                                <td>Reverse Engineering</td>
+                                <td>Semantic model of existing architecture (brownfield)</td>
                             </tr>
                             <tr>
-                                <td>Agent mode</td>
-                                <td>"List edge cases for X, then write tests" — safer than just "write tests"</td>
+                                <td>Requirements Analysis</td>
+                                <td>Structured requirements from high-level goals</td>
+                            </tr>
+                            <tr>
+                                <td>User Stories</td>
+                                <td>Detailed stories with acceptance criteria</td>
+                            </tr>
+                            <tr>
+                                <td>Application Design</td>
+                                <td>Architecture decisions and component design</td>
+                            </tr>
+                            <tr>
+                                <td>Functional / NFR Design</td>
+                                <td>Detailed design docs with non-functional requirements</td>
+                            </tr>
+                            <tr>
+                                <td>Mob Elaboration</td>
+                                <td>Mandatory team review checkpoint</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="section">
-                <h3>Test-First Workflow (Recommended)</h3>
-                <p style="margin-bottom: 16px; color: var(--text-muted);">A 3-step mini-recipe:</p>
-                <ol class="workflow-steps">
-                    <li>Ask agent to list edge cases and failure modes</li>
-                    <li>Ask agent to write tests that would FAIL if those edge cases are mishandled</li>
-                    <li>Then implement — agent uses test output as feedback loop</li>
-                </ol>
-                <p style="margin-top: 20px; margin-bottom: 16px; font-size: 0.9rem; color: var(--text-muted);">Example prompt:</p>
-                <div class="code-block">List edge cases for the payment flow, then write tests
-that would fail if any edge case is mishandled.
-Use xUnit. Include: empty cart, duplicate items,
-out-of-stock, concurrent modification.</div>
+            <div class="callout">
+                <div class="callout-title">Key strength</div>
+                <p>For brownfield projects, AI-DLC's automatic reverse engineering stage is compelling — the agent inspects the workspace, builds a semantic model, and uses it to constrain all subsequent phases. This is particularly powerful for large legacy codebases.</p>
             </div>
 
             <div class="section">
-                <h3>Security Testing</h3>
+                <h3>When to Use AI-DLC</h3>
                 <ul class="security-list">
-                    <li><strong>CodeQL (SAST):</strong> Enable in repo Settings → Code Security. Runs on every push and PR automatically.</li>
-                    <li><strong>Secret Scanning:</strong> Via GitHub MCP Server — detects leaked credentials.</li>
-                    <li><strong>DAST:</strong> StackHawk and Aikido offer Copilot custom agents for dynamic security testing.</li>
+                    <li>Your team needs a <strong>prescribed process</strong> with mandatory checkpoints</li>
+                    <li>You're working on a <strong>large brownfield codebase</strong> and want automated analysis</li>
+                    <li>Enterprise <strong>governance and audit trails</strong> are non-negotiable</li>
+                    <li>You want the <strong>AI agent to enforce</strong> the workflow, not developers</li>
+                    <li>You need <strong>formal sign-off ceremonies</strong> (Mob Elaboration, Mob Construction)</li>
                 </ul>
             </div>
 
-            <div class="callout">
-                <div class="callout-title">⚠️ The Self-Rating Trap</div>
-                <p>The AI that wrote the code shouldn't be the only one validating it. Use physics (test runners, linters, type checkers) as your independent verification. Always run the tests — don't just read them.</p>
+            <div class="approval-note">
+                <p><strong>Important:</strong> AI-DLC is a process layer that wraps around AI tools — it still requires a coding tool underneath. It lists GitHub Copilot as a supported agent. The two approaches are complementary, not competing.</p>
             </div>
         </div>
 
-        <!-- Right Column: Review -->
+        <!-- Right Column: GitHub Planning -->
         <div class="card">
-            <h2>👀 Code Review with Copilot</h2>
+            <h2>🔧 GitHub — Composable Planning</h2>
 
             <div class="section">
-                <h3>Automated PR Review</h3>
-                <p style="margin-bottom: 16px; color: var(--text-muted);">How to enable:</p>
-                <ol class="review-steps">
-                    <li>Open any Pull Request</li>
-                    <li>Go to Reviewers → Select "Copilot"</li>
-                    <li>Copilot analyzes the diff, leaves inline comments within minutes</li>
+                <h3>Spec Kit — Spec-Driven Development</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">GitHub's answer to structured planning. Opt-in, agent-agnostic, living artefacts.</p>
+                <ol class="workflow-steps">
+                    <li><strong>Constitution</strong> — Define project principles in <code style="background-color: var(--surface-2); padding: 2px 6px; border-radius: 4px;">constitution.md</code> (coding standards, architecture constraints)</li>
+                    <li><strong>Specify</strong> — <code style="background-color: var(--surface-2); padding: 2px 6px; border-radius: 4px;">/speckit.specify</code> generates a structured <code style="background-color: var(--surface-2); padding: 2px 6px; border-radius: 4px;">spec.md</code> from a high-level prompt</li>
+                    <li><strong>Plan</strong> — <code style="background-color: var(--surface-2); padding: 2px 6px; border-radius: 4px;">/speckit.plan</code> produces a technical implementation plan from the spec</li>
+                    <li><strong>Tasks</strong> — Break the plan into discrete, implementable tasks</li>
+                    <li><strong>Implement</strong> — Agent works through tasks with harnesses running</li>
+                    <li><strong>Review</strong> — PR review (human + Copilot) validates against the original spec</li>
                 </ol>
-                <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">Comments cover: bugs, performance, style, security concerns.</p>
-                <div class="approval-note">
-                    <p><strong>Important:</strong> Copilot reviews leave comments, never approvals. The human always has final say.</p>
+            </div>
+
+            <div class="section">
+                <h3>Planning Tools You Have Now</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tool</th>
+                                <th>What It Does</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Copilot Chat + <code>@workspace</code></td>
+                                <td>Explore architecture before writing requirements</td>
+                                <td>"@workspace What auth mechanisms exist? List all auth-related files."</td>
+                            </tr>
+                            <tr>
+                                <td>Mermaid Diagrams</td>
+                                <td>Force structural reasoning about architecture</td>
+                                <td>"Create a Mermaid C4 diagram showing the cache service architecture."</td>
+                            </tr>
+                            <tr>
+                                <td>Prompt For Questions</td>
+                                <td>AI interviews you to surface requirements</td>
+                                <td>"I need to add multi-tenancy. Ask me 5 questions before suggesting an approach."</td>
+                            </tr>
+                            <tr>
+                                <td>Group Simulation</td>
+                                <td>Simulate expert review panel</td>
+                                <td>"If I showed this design to a security engineer, DBA, and platform engineer — what would each say?"</td>
+                            </tr>
+                            <tr>
+                                <td>ADC Records</td>
+                                <td>Capture architecture decisions</td>
+                                <td>Create <code>adc/YYYY-MM-DD--decision-name/</code> with research.md, plan.md, handoff.md</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <div class="section">
-                <h3>Coding Agent PRs</h3>
-                <p style="margin-bottom: 12px;">When the coding agent opens a PR:</p>
-                <ul style="list-style: disc; padding-left: 20px; color: var(--text);">
-                    <li style="margin-bottom: 8px;">Includes summary of changes and reasoning</li>
-                    <li style="margin-bottom: 8px;">Shows full reasoning trace via Copilot session link</li>
-                    <li>Review like any other PR — same standards apply</li>
-                </ul>
-            </div>
-
-            <div class="section">
-                <h3>Custom Review Agents</h3>
-                <p style="margin-bottom: 16px; color: var(--text-muted);">Create <code style="background-color: var(--surface-2); padding: 2px 6px; border-radius: 4px;">.agent.md</code> files for domain-specific review:</p>
-                <ul style="list-style: disc; padding-left: 20px; color: var(--text); margin-bottom: 16px;">
-                    <li style="margin-bottom: 8px;"><strong>Accessibility:</strong> "Review all CSS changes for WCAG 2.1 AA compliance"</li>
-                    <li style="margin-bottom: 8px;"><strong>Performance:</strong> "Flag any N+1 query patterns in database calls"</li>
-                    <li><strong>Compliance:</strong> "Check all API endpoints have proper authorization attributes"</li>
-                </ul>
-                <p style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted);">Example .agent.md:</p>
-                <div class="code-block"># Security Review Agent
-Review all changes for:
-- SQL injection vulnerabilities
-- Missing input validation
-- Hardcoded credentials or secrets
-- Missing authorization checks on API endpoints</div>
+            <div class="callout">
+                <div class="callout-title">The Shared Insight</div>
+                <p><strong>Both approaches agree:</strong> unstructured AI assistance makes developers slower, not faster. Whether you use AI-DLC's steering files or GitHub's Spec Kit, the principle is the same — specs before code, structured phases, human review at checkpoints. Pick the one that fits your team's culture.</p>
             </div>
         </div>
     </div>
 
     <!-- Resources Section -->
     <div class="resources-section">
-        <h2>Self-Paced Resources</h2>
+        <h2>Resources</h2>
         <div class="resources-grid">
-            <a href="https://github.com/skills/copilot-code-review" class="resource-card" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/awslabs/aidlc-workflows" class="resource-card" target="_blank" rel="noopener noreferrer">
                 <div class="icon">🔗</div>
-                <div class="title">Copilot Code Review</div>
-                <div class="desc">Interactive GitHub Skills course on code review</div>
+                <div class="title">AWS AI-DLC Workflows</div>
+                <div class="desc">Prescriptive workflow for structured planning and design</div>
             </a>
-            <a href="https://learn.microsoft.com/en-us/training/modules/create-unit-tests-using-github-copilot-tools/" class="resource-card" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/github/spec-kit" class="resource-card" target="_blank" rel="noopener noreferrer">
                 <div class="icon">🔗</div>
-                <div class="title">Create Unit Tests with Copilot</div>
-                <div class="desc">Microsoft Learn module on test generation</div>
+                <div class="title">GitHub Spec Kit</div>
+                <div class="desc">Spec-driven development framework for GitHub</div>
             </a>
-            <a href="https://github.com/skills/secure-code-game" class="resource-card" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/skills/scale-institutional-knowledge-using-copilot-spaces" class="resource-card" target="_blank" rel="noopener noreferrer">
                 <div class="icon">🔗</div>
-                <div class="title">Secure Code Game</div>
-                <div class="desc">Hands-on security vulnerability challenge</div>
+                <div class="title">Scale Knowledge Using Copilot Spaces</div>
+                <div class="desc">Capture and share architectural knowledge across teams</div>
             </a>
-            <a href="https://github.com/skills/introduction-to-codeql" class="resource-card" target="_blank" rel="noopener noreferrer">
+            <a href="https://learn.microsoft.com/en-us/training/modules/introduction-prompt-engineering-with-github-copilot/" class="resource-card" target="_blank" rel="noopener noreferrer">
                 <div class="icon">🔗</div>
-                <div class="title">Introduction to CodeQL</div>
-                <div class="desc">Learn static analysis for security scanning</div>
+                <div class="title">Introduction to Prompt Engineering with Copilot</div>
+                <div class="desc">Microsoft Learn module on effective prompting</div>
             </a>
         </div>
     </div>
 
     <div class="footer">
-        <p>Part of the AI-SDLC workshop materials · See also: <a href="onepager-agent-mode.html">Agent Mode &amp; Implementation</a> · <a href="onepager-maintenance.html">Maintenance &amp; Refactoring</a> · <a href="onepager-cicd.html">CI/CD &amp; Actions</a></p>
+        <p>Part of the AI-SDLC workshop materials · See also: <a href="onepager-agent-mode.html">Agent Mode & Implementation</a> · <a href="onepager-testing-review.html">Testing & Review</a> · <a href="comparison.html">Full Comparison</a></p>
     </div>
 </body>
 </html>

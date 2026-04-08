@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
-    <title>Testing & Review with AI Agents</title>
+    <title>Maintenance & Refactoring with AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -436,118 +436,144 @@
 <body>
     <div class="header">
         <div class="header-content">
-            <h1>Testing & Review with AI Agents</h1>
-            <p>Practical quick reference for AI-assisted test generation, code review, and security scanning.</p>
+            <h1>Maintenance & Refactoring with AI</h1>
+            <p>How to use AI agents to understand, refactor, and evolve legacy and brownfield codebases safely.</p>
         </div>
         <a href="index.html" class="back-link">← Back to AI-SDLC main site</a>
     </div>
 
     <div class="columns">
-        <!-- Left Column: Testing -->
+        <!-- Left Column: Understanding Code -->
         <div class="card">
-            <h2>🧪 Testing with Copilot</h2>
+            <h2>🔍 Understanding Existing Code</h2>
 
             <div class="section">
-                <h3>Test Generation — The Basics</h3>
+                <h3>/explain — Your First Move</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">Before modifying unfamiliar code, always explain first:</p>
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
                                 <th>Command</th>
-                                <th>What It Does</th>
+                                <th>Use Case</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><code>/tests</code></td>
-                                <td>Generate unit tests for selected code. Infers framework (Jest, pytest, xUnit).</td>
+                                <td><code>/explain</code> on selection</td>
+                                <td>Understand what selected code does</td>
                             </tr>
                             <tr>
-                                <td><code>/tests #file</code></td>
-                                <td>Generate tests for an entire file</td>
+                                <td><code>/explain #file</code></td>
+                                <td>Get overview of an entire file's responsibilities</td>
                             </tr>
                             <tr>
-                                <td>Agent mode</td>
-                                <td>"List edge cases for X, then write tests" — safer than just "write tests"</td>
+                                <td><code>@workspace</code> + question</td>
+                                <td>Explore architecture across the project</td>
+                            </tr>
+                            <tr>
+                                <td><code>/explain</code> on error</td>
+                                <td>Understand a stack trace or build error</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <p style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted);">Example prompt:</p>
+                <div class="code-block">Explain what this stored procedure does, what calls it,
+and what would break if I changed the return type.</div>
             </div>
 
             <div class="section">
-                <h3>Test-First Workflow (Recommended)</h3>
-                <p style="margin-bottom: 16px; color: var(--text-muted);">A 3-step mini-recipe:</p>
+                <h3>The Steel Thread Pattern</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">When refactoring brownfield code, pick the narrowest vertical slice through your system:</p>
                 <ol class="workflow-steps">
-                    <li>Ask agent to list edge cases and failure modes</li>
-                    <li>Ask agent to write tests that would FAIL if those edge cases are mishandled</li>
-                    <li>Then implement — agent uses test output as feedback loop</li>
+                    <li><strong>Identify</strong> — Find the narrowest user flow touching every layer (e.g., "add to cart" from UI → Controller → Service → DB)</li>
+                    <li><strong>Research</strong> — Use <code style="background-color: var(--surface-2); padding: 2px 6px; border-radius: 4px;">@workspace</code> and LSP (find-references, type-hierarchy) to map every caller and dependency</li>
+                    <li><strong>Plan</strong> — In a fresh context, feed research.md to produce an ordered extraction plan with verification commands</li>
+                    <li><strong>Implement</strong> — Follow the plan with harnesses running: compiler + unit tests + E2E after every change</li>
+                    <li><strong>Verify</strong> — The "physics beat law" moment: if the compiler or tests force a deviation from the plan, that's correct behaviour</li>
                 </ol>
-                <p style="margin-top: 20px; margin-bottom: 16px; font-size: 0.9rem; color: var(--text-muted);">Example prompt:</p>
-                <div class="code-block">List edge cases for the payment flow, then write tests
-that would fail if any edge case is mishandled.
-Use xUnit. Include: empty cart, duplicate items,
-out-of-stock, concurrent modification.</div>
-            </div>
-
-            <div class="section">
-                <h3>Security Testing</h3>
-                <ul class="security-list">
-                    <li><strong>CodeQL (SAST):</strong> Enable in repo Settings → Code Security. Runs on every push and PR automatically.</li>
-                    <li><strong>Secret Scanning:</strong> Via GitHub MCP Server — detects leaked credentials.</li>
-                    <li><strong>DAST:</strong> StackHawk and Aikido offer Copilot custom agents for dynamic security testing.</li>
-                </ul>
-            </div>
-
-            <div class="callout">
-                <div class="callout-title">⚠️ The Self-Rating Trap</div>
-                <p>The AI that wrote the code shouldn't be the only one validating it. Use physics (test runners, linters, type checkers) as your independent verification. Always run the tests — don't just read them.</p>
+                <div class="callout">
+                    <div class="callout-title">Key insight:</div>
+                    <p>Each phase gets a fresh AI context with only the artefacts from the previous phase. This prevents the agent from hallucinating based on stale conversation context.</p>
+                </div>
             </div>
         </div>
 
-        <!-- Right Column: Review -->
+        <!-- Right Column: Refactoring -->
         <div class="card">
-            <h2>👀 Code Review with Copilot</h2>
+            <h2>🔧 Refactoring & Evolution</h2>
 
             <div class="section">
-                <h3>Automated PR Review</h3>
-                <p style="margin-bottom: 16px; color: var(--text-muted);">How to enable:</p>
+                <h3>Agent Mode Refactoring</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">Multi-file refactoring with test preservation. Three example prompts:</p>
+
+                <p style="margin-bottom: 8px; font-weight: 500; color: var(--text);">Service extraction:</p>
+                <div class="code-block">Refactor: extract the email notification logic from
+OrderController into a NotificationService. Update all
+callers. Don't change behaviour.</div>
+
+                <p style="margin-top: 16px; margin-bottom: 8px; font-weight: 500; color: var(--text);">Pattern migration:</p>
+                <div class="code-block">Migrate all direct DbContext calls in the Controllers
+folder to use the repository pattern. Follow the same
+structure as ProductRepository. Update tests.</div>
+
+                <p style="margin-top: 16px; margin-bottom: 8px; font-weight: 500; color: var(--text);">Code modernisation:</p>
+                <div class="code-block">Update this class to use C# 12 features: file-scoped
+namespaces, primary constructors where appropriate,
+and collection expressions. Keep all existing tests passing.</div>
+            </div>
+
+            <div class="section">
+                <h3>Dependency Updates</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">How Dependabot + Copilot work together:</p>
                 <ol class="review-steps">
-                    <li>Open any Pull Request</li>
-                    <li>Go to Reviewers → Select "Copilot"</li>
-                    <li>Copilot analyzes the diff, leaves inline comments within minutes</li>
+                    <li>Enable Dependabot in repo Settings → Code Security</li>
+                    <li>Dependabot opens PRs for outdated dependencies automatically</li>
+                    <li>Add Copilot as reviewer — it checks for breaking API changes</li>
+                    <li>Copilot suggests migration steps if the update requires code changes</li>
                 </ol>
-                <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">Comments cover: bugs, performance, style, security concerns.</p>
                 <div class="approval-note">
-                    <p><strong>Important:</strong> Copilot reviews leave comments, never approvals. The human always has final say.</p>
+                    <p><strong>Tip:</strong> Combine Dependabot PRs with agent mode. If a dependency update breaks something, ask agent mode: "Fix the build failures caused by the upgrade to [library] v[X]. Check the migration guide at [URL]."</p>
                 </div>
             </div>
 
             <div class="section">
-                <h3>Coding Agent PRs</h3>
-                <p style="margin-bottom: 12px;">When the coding agent opens a PR:</p>
-                <ul style="list-style: disc; padding-left: 20px; color: var(--text);">
-                    <li style="margin-bottom: 8px;">Includes summary of changes and reasoning</li>
-                    <li style="margin-bottom: 8px;">Shows full reasoning trace via Copilot session link</li>
-                    <li>Review like any other PR — same standards apply</li>
-                </ul>
-            </div>
-
-            <div class="section">
-                <h3>Custom Review Agents</h3>
-                <p style="margin-bottom: 16px; color: var(--text-muted);">Create <code style="background-color: var(--surface-2); padding: 2px 6px; border-radius: 4px;">.agent.md</code> files for domain-specific review:</p>
-                <ul style="list-style: disc; padding-left: 20px; color: var(--text); margin-bottom: 16px;">
-                    <li style="margin-bottom: 8px;"><strong>Accessibility:</strong> "Review all CSS changes for WCAG 2.1 AA compliance"</li>
-                    <li style="margin-bottom: 8px;"><strong>Performance:</strong> "Flag any N+1 query patterns in database calls"</li>
-                    <li><strong>Compliance:</strong> "Check all API endpoints have proper authorization attributes"</li>
-                </ul>
-                <p style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted);">Example .agent.md:</p>
-                <div class="code-block"># Security Review Agent
-Review all changes for:
-- SQL injection vulnerabilities
-- Missing input validation
-- Hardcoded credentials or secrets
-- Missing authorization checks on API endpoints</div>
+                <h3>The Safety Net</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">Before any refactoring, ensure your harness:</p>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Layer</th>
+                                <th>What It Catches</th>
+                                <th>How to Set Up</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Compiler / type checker</td>
+                                <td>Type errors, missing references</td>
+                                <td>Already there — just build</td>
+                            </tr>
+                            <tr>
+                                <td>Unit tests</td>
+                                <td>Logic errors, calculation drift</td>
+                                <td><code>/tests</code> to generate baseline coverage</td>
+                            </tr>
+                            <tr>
+                                <td>E2E tests (Playwright)</td>
+                                <td>Behavioural changes, broken flows</td>
+                                <td>Agent mode: "Write Playwright tests for the [X] flow"</td>
+                            </tr>
+                            <tr>
+                                <td>Linter / analyser</td>
+                                <td>Style drift, code smells</td>
+                                <td>Configure in CI pipeline</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -556,31 +582,31 @@ Review all changes for:
     <div class="resources-section">
         <h2>Self-Paced Resources</h2>
         <div class="resources-grid">
-            <a href="https://github.com/skills/copilot-code-review" class="resource-card" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/skills/modernize-your-legacy-code-with-github-copilot" class="resource-card" target="_blank" rel="noopener noreferrer">
                 <div class="icon">🔗</div>
-                <div class="title">Copilot Code Review</div>
-                <div class="desc">Interactive GitHub Skills course on code review</div>
+                <div class="title">Modernize Legacy Code with Copilot</div>
+                <div class="desc">Interactive course on modernizing existing code</div>
             </a>
-            <a href="https://learn.microsoft.com/en-us/training/modules/create-unit-tests-using-github-copilot-tools/" class="resource-card" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/skills/build-applications-w-copilot-agent-mode" class="resource-card" target="_blank" rel="noopener noreferrer">
                 <div class="icon">🔗</div>
-                <div class="title">Create Unit Tests with Copilot</div>
-                <div class="desc">Microsoft Learn module on test generation</div>
+                <div class="title">Build Apps with Agent Mode</div>
+                <div class="desc">Learn how to use coding agents for multi-file changes</div>
             </a>
-            <a href="https://github.com/skills/secure-code-game" class="resource-card" target="_blank" rel="noopener noreferrer">
+            <a href="https://learn.microsoft.com/en-us/training/modules/perform-code-maintenance-with-copilot-agent/" class="resource-card" target="_blank" rel="noopener noreferrer">
                 <div class="icon">🔗</div>
-                <div class="title">Secure Code Game</div>
-                <div class="desc">Hands-on security vulnerability challenge</div>
+                <div class="title">Code Maintenance with Copilot Agent</div>
+                <div class="desc">Microsoft Learn module on using agents for maintenance</div>
             </a>
-            <a href="https://github.com/skills/introduction-to-codeql" class="resource-card" target="_blank" rel="noopener noreferrer">
+            <a href="https://learn.microsoft.com/en-us/training/modules/code-review-with-copilot/" class="resource-card" target="_blank" rel="noopener noreferrer">
                 <div class="icon">🔗</div>
-                <div class="title">Introduction to CodeQL</div>
-                <div class="desc">Learn static analysis for security scanning</div>
+                <div class="title">Code Review with Copilot</div>
+                <div class="desc">Master code review practices with AI assistance</div>
             </a>
         </div>
     </div>
 
     <div class="footer">
-        <p>Part of the AI-SDLC workshop materials · See also: <a href="onepager-agent-mode.html">Agent Mode &amp; Implementation</a> · <a href="onepager-maintenance.html">Maintenance &amp; Refactoring</a> · <a href="onepager-cicd.html">CI/CD &amp; Actions</a></p>
+        <p>Part of the AI-SDLC workshop materials · See also: <a href="onepager-testing-review.html">Testing & Review</a> · <a href="onepager-agent-mode.html">Agent Mode & Implementation</a> · <a href="onepager-cicd.html">CI/CD & Actions</a></p>
     </div>
 </body>
 </html>

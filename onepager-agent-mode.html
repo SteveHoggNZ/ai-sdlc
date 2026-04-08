@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Agent Mode & Implementation</title>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-2: #1a1a26;
+            --border: #2a2a3a;
+            --text: #e4e4ef;
+            --text-muted: #8888a0;
+            --text-dim: #5a5a72;
+            --accent: #7c5cfc;
+            --accent-light: #9b7fff;
+            --accent-2: #00d4aa;
+            --accent-3: #ff6b8a;
+            --orange: #e8913a;
+            --blue: #5b8def;
+            --teal: #3bbfa0;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 48px 32px;
+            line-height: 1.6;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 48px;
+        }
+
+        .header-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header-content p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .back-link:hover {
+            color: var(--accent-light);
+        }
+
+        .columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-2);
+            margin-bottom: 16px;
+        }
+
+        .section p {
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        table th {
+            background-color: var(--surface-2);
+            border-bottom: 2px solid var(--border);
+            color: var(--accent-2);
+            text-align: left;
+            padding: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .code-block {
+            background-color: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--text);
+            overflow-x: auto;
+            margin: 12px 0;
+            line-height: 1.5;
+        }
+
+        .callout {
+            background-color: rgba(232, 145, 58, 0.1);
+            border-left: 4px solid var(--orange);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: var(--radius-sm);
+        }
+
+        .callout p {
+            color: var(--text);
+            margin: 0;
+        }
+
+        .approval-note {
+            background-color: rgba(91, 141, 239, 0.1);
+            border-left: 4px solid var(--blue);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: var(--radius-sm);
+        }
+
+        .approval-note p {
+            color: var(--text);
+            margin: 0;
+        }
+
+        .resources-section {
+            margin-bottom: 48px;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .resource-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        .resource-card a {
+            text-decoration: none;
+        }
+
+        .resource-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .resource-card .title {
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .resource-card .desc {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer {
+            text-align: center;
+            border-top: 1px solid var(--border);
+            padding-top: 32px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+            margin: 0 4px;
+        }
+
+        .footer a:hover {
+            color: var(--accent-light);
+        }
+
+        @media (max-width: 1024px) {
+            .columns {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                color: #1a1a1a;
+            }
+
+            .card {
+                background-color: white;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+            }
+
+            .code-block {
+                background-color: #f5f5f5;
+                color: #1a1a1a;
+                border: 1px solid #ddd;
+            }
+
+            table th {
+                background-color: #f5f5f5;
+                color: #1a1a1a;
+                border-bottom: 2px solid #ddd;
+            }
+
+            table td {
+                color: #1a1a1a;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .header, .footer, .back-link {
+                color: #1a1a1a;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Agent Mode & Implementation</h1>
+            <p>How to set up and use Copilot's AI agents for real coding work — from inline completions to autonomous multi-file changes.</p>
+        </div>
+        <a href="index.html" class="back-link">
+            <span>←</span> Back
+        </a>
+    </div>
+
+    <div class="columns">
+        <!-- Left Column: Setting Up Your Project -->
+        <div>
+            <div class="card">
+                <h2>⚙️ Setting Up Your Project</h2>
+
+                <div class="section">
+                    <h3>copilot-instructions.md</h3>
+                    <p>This is your project's AI constitution. Create <code>.github/copilot-instructions.md</code> to set coding standards, architecture constraints, and naming conventions. Applied to every Copilot suggestion.</p>
+                    <div class="code-block"># Architecture
+- Use repository pattern. Never call DbContext directly from controllers.
+- All new services must implement an interface and be registered in DI.
+
+# Coding Standards
+- C# 12, .NET 8. Use file-scoped namespaces.
+- Async methods must have Async suffix.
+- No magic strings — use constants or configuration.
+
+# Constraints
+- Never modify the migration history.
+- All public API endpoints require [Authorize] attribute.</div>
+                </div>
+
+                <div class="section">
+                    <h3>Custom Skills (SKILL.md)</h3>
+                    <p>Encode repeatable patterns as reusable agent knowledge. A skill is a SKILL.md file plus optional scripts.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Location</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>.github/skills/extract-service/SKILL.md</code></td>
+                                <td>Step-by-step service extraction pattern</td>
+                            </tr>
+                            <tr>
+                                <td><code>.github/skills/add-endpoint/SKILL.md</code></td>
+                                <td>API endpoint scaffolding with tests</td>
+                            </tr>
+                            <tr>
+                                <td><code>.github/skills/migrate-db/SKILL.md</code></td>
+                                <td>Safe database migration workflow</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h3>MCP Servers</h3>
+                    <p>Connect Copilot to external data. Configure in <code>.vscode/mcp.json</code>.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Connection</th>
+                                <th>What It Provides</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>PostgreSQL / SQL Server</td>
+                                <td>Query schemas and data directly in context</td>
+                            </tr>
+                            <tr>
+                                <td>Jira / Azure DevOps</td>
+                                <td>Pull ticket details and requirements</td>
+                            </tr>
+                            <tr>
+                                <td>Confluence / Wiki</td>
+                                <td>Access documentation and architecture decisions</td>
+                            </tr>
+                            <tr>
+                                <td>Custom internal APIs</td>
+                                <td>Domain-specific data and operations</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Using Agent Mode -->
+        <div>
+            <div class="card">
+                <h2>🚀 Using Agent Mode</h2>
+
+                <div class="section">
+                    <h3>Agent Mode vs Coding Agent</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Agent Mode (VS Code)</th>
+                                <th>Coding Agent (GitHub.com)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Where</td>
+                                <td>VS Code, local</td>
+                                <td>GitHub.com, cloud</td>
+                            </tr>
+                            <tr>
+                                <td>Trigger</td>
+                                <td>Chat panel, Ctrl+I</td>
+                                <td>Assign issue to @copilot</td>
+                            </tr>
+                            <tr>
+                                <td>Scope</td>
+                                <td>Multi-file, runs terminal</td>
+                                <td>Full repo, creates branch + PR</td>
+                            </tr>
+                            <tr>
+                                <td>Supervision</td>
+                                <td>You watch in real-time</td>
+                                <td>Asynchronous, review the PR</td>
+                            </tr>
+                            <tr>
+                                <td>Best for</td>
+                                <td>Complex tasks you want to steer</td>
+                                <td>Well-defined issues, autonomous work</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h3>Effective Agent Mode Prompts</h3>
+                    <p><strong>1. Refactoring:</strong></p>
+                    <div class="code-block">Extract the add-to-cart logic from ShoppingCartController
+into a CartService. Update all callers and add unit tests.
+Don't change existing behaviour.</div>
+
+                    <p><strong>2. Feature implementation:</strong></p>
+                    <div class="code-block">Add Redis caching to the ProductService.GetById method.
+Use IDistributedCache. Cache for 5 minutes.
+Include cache invalidation when product is updated.</div>
+
+                    <p><strong>3. Multi-file scaffolding:</strong></p>
+                    <div class="code-block">Create a new NotificationService following the repository
+pattern in this project. Include: interface, implementation,
+DI registration, unit tests. Follow the same structure as
+OrderService.</div>
+                </div>
+
+                <div class="section">
+                    <h3>The Feedback Loop</h3>
+                    <div class="approval-note">
+                        <p><strong>Agent mode's real power is its feedback loop.</strong> It runs terminal commands (build, test, lint), reads the output, and self-corrects. Make sure your project has: a working build command, runnable tests, and a linter. The better your harness, the better the agent performs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resources Section -->
+    <div class="resources-section card">
+        <h2>📚 Resources</h2>
+        <div class="resources-grid">
+            <a href="https://github.com/skills/build-applications-w-copilot-agent-mode" class="resource-card">
+                <div class="icon">🔗</div>
+                <div class="title">Build Applications with Copilot Agent Mode</div>
+                <div class="desc">Learn agent fundamentals and advanced patterns</div>
+            </a>
+            <a href="https://github.com/skills/customize-your-github-copilot-experience" class="resource-card">
+                <div class="icon">🔗</div>
+                <div class="title">Customize Your Copilot Experience</div>
+                <div class="desc">Configure instructions and adapt to your workflow</div>
+            </a>
+            <a href="https://github.com/skills/integrate-mcp-with-copilot" class="resource-card">
+                <div class="icon">🔗</div>
+                <div class="title">Integrate MCP with Copilot</div>
+                <div class="desc">Connect external data sources and tools</div>
+            </a>
+            <a href="https://github.com/skills/expand-your-team-with-copilot" class="resource-card">
+                <div class="icon">🔗</div>
+                <div class="title">Expand Your Team with Copilot</div>
+                <div class="desc">Scale your team's capabilities with AI</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Part of the AI-SDLC workshop materials · See also:
+            <a href="onepager-testing-review.html">Testing & Review</a> ·
+            <a href="onepager-maintenance.html">Maintenance & Refactoring</a> ·
+            <a href="onepager-cicd.html">CI/CD & Actions</a>
+        </p>
+    </div>
+</body>
+</html>

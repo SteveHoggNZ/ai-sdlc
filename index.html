@@ -1090,9 +1090,11 @@
       </div>
 
       <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.75rem;">
-        <a href="onepager-process.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2); border-radius: var(--radius); color: var(--accent-2); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: all 0.2s;">📄 Process One-Pager</a>
-        <a href="onepager-steel-thread.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(232,145,58,0.08); border: 1px solid rgba(232,145,58,0.2); border-radius: var(--radius); color: var(--orange); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: all 0.2s;">🔩 Steel Thread Recipe</a>
+        <a href="onepager-planning.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2); border-radius: var(--radius); color: var(--accent-2); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: all 0.2s;">📋 Planning &amp; Design</a>
+        <a href="onepager-agent-mode.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(232,145,58,0.08); border: 1px solid rgba(232,145,58,0.2); border-radius: var(--radius); color: var(--orange); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: all 0.2s;">⚙️ Agent Mode</a>
         <a href="onepager-testing-review.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(124,92,252,0.08); border: 1px solid rgba(124,92,252,0.2); border-radius: var(--radius); color: var(--accent-light); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: all 0.2s;">🧪 Testing &amp; Review</a>
+        <a href="onepager-maintenance.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(59,191,160,0.08); border: 1px solid rgba(59,191,160,0.2); border-radius: var(--radius); color: var(--teal); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: all 0.2s;">🔧 Maintenance</a>
+        <a href="onepager-cicd.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(91,141,239,0.08); border: 1px solid rgba(91,141,239,0.2); border-radius: var(--radius); color: var(--blue); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: all 0.2s;">🔄 CI/CD &amp; Actions</a>
       </div>
     </section>
   </div>
@@ -3597,32 +3599,50 @@
     </section>
 
     <section class="content-section">
-      <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
 
-        <a href="onepager-process.html" style="text-decoration: none;">
+        <a href="onepager-planning.html" style="text-decoration: none;">
           <div class="card" style="height: 100%; cursor: pointer;">
-            <div class="card-icon green">📄</div>
-            <h4 style="color: var(--accent-2);">Your Process — Microsoft Stack</h4>
-            <p>The executive summary. How the RPI flow (Research → Plan → Implement) works on GitHub/Microsoft. Side-by-side with AWS AI-DLC. Where each tool fits at every SDLC stage. What to start Monday.</p>
-            <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 600; color: var(--accent-2);">Answers: "How do we do this with our stack?" →</div>
+            <div class="card-icon green">📋</div>
+            <h4 style="color: var(--accent-2);">Planning & Design</h4>
+            <p>How AWS AI-DLC and GitHub Spec Kit handle structured planning. When to use each, the tools you have now, and why specs before code matters.</p>
+            <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 600; color: var(--accent-2);">SDLC: Plan & Design →</div>
           </div>
         </a>
 
-        <a href="onepager-steel-thread.html" style="text-decoration: none;">
+        <a href="onepager-agent-mode.html" style="text-decoration: none;">
           <div class="card" style="height: 100%; cursor: pointer;">
-            <div class="card-icon orange">🔩</div>
-            <h4 style="color: var(--orange);">Steel Thread Recipe</h4>
-            <p>A worked example: extracting a service from a 200k-line .NET codebase using AI-DLC. The 5-step recipe, the artefacts at each step, and the "physics beat law" moment. Copy this pattern.</p>
-            <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 600; color: var(--orange);">Answers: "Show me a real example" →</div>
+            <div class="card-icon orange">⚙️</div>
+            <h4 style="color: var(--orange);">Agent Mode & Implementation</h4>
+            <p>Set up copilot-instructions.md, custom skills, and MCP servers. Agent mode vs coding agent. Effective prompts for real coding work.</p>
+            <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 600; color: var(--orange);">SDLC: Code & Implement →</div>
           </div>
         </a>
 
         <a href="onepager-testing-review.html" style="text-decoration: none;">
           <div class="card" style="height: 100%; cursor: pointer;">
             <div class="card-icon">🧪</div>
-            <h4 style="color: var(--accent-light);">Testing & Review with Agents</h4>
-            <p>Practical quick reference for AI-assisted test generation, code review, and security scanning. Commands, workflows, custom review agents, and self-paced GitHub Skills links.</p>
-            <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 600; color: var(--accent-light);">Answers: "How do I use agents for review & testing?" →</div>
+            <h4 style="color: var(--accent-light);">Testing & Review</h4>
+            <p>Test generation, test-first workflows, security scanning, automated PR review, custom review agents. Commands and example prompts.</p>
+            <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 600; color: var(--accent-light);">SDLC: Test & Review →</div>
+          </div>
+        </a>
+
+        <a href="onepager-maintenance.html" style="text-decoration: none;">
+          <div class="card" style="height: 100%; cursor: pointer;">
+            <div class="card-icon" style="background: rgba(59,191,160,0.15); border-color: rgba(59,191,160,0.2);">🔧</div>
+            <h4 style="color: var(--teal);">Maintenance & Refactoring</h4>
+            <p>Understanding legacy code with /explain, the steel thread pattern, agent mode refactoring, Dependabot + Copilot, and building the safety net.</p>
+            <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 600; color: var(--teal);">SDLC: Maintain & Evolve →</div>
+          </div>
+        </a>
+
+        <a href="onepager-cicd.html" style="text-decoration: none;">
+          <div class="card" style="height: 100%; cursor: pointer;">
+            <div class="card-icon" style="background: rgba(91,141,239,0.15); border-color: rgba(91,141,239,0.2);">🔄</div>
+            <h4 style="color: var(--blue);">CI/CD & GitHub Actions</h4>
+            <p>Generate and fix workflow YAML, common pipeline patterns, infrastructure as code across providers, and custom CI review agents.</p>
+            <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: 600; color: var(--blue);">SDLC: Deploy & Release →</div>
           </div>
         </a>
 

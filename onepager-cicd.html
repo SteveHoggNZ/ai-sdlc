@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
-    <title>Testing & Review with AI Agents</title>
+    <title>CI/CD & GitHub Actions with AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -436,39 +436,44 @@
 <body>
     <div class="header">
         <div class="header-content">
-            <h1>Testing & Review with AI Agents</h1>
-            <p>Practical quick reference for AI-assisted test generation, code review, and security scanning.</p>
+            <h1>CI/CD & GitHub Actions with AI</h1>
+            <p>Generate, modify, and troubleshoot CI/CD pipelines with Copilot. From workflow YAML to infrastructure as code.</p>
         </div>
         <a href="index.html" class="back-link">← Back to AI-SDLC main site</a>
     </div>
 
     <div class="columns">
-        <!-- Left Column: Testing -->
+        <!-- Left Column: GitHub Actions with Copilot -->
         <div class="card">
-            <h2>🧪 Testing with Copilot</h2>
+            <h2>🔄 GitHub Actions with Copilot</h2>
 
             <div class="section">
-                <h3>Test Generation — The Basics</h3>
+                <h3>Generating Workflows</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">Copilot understands Actions syntax. Example prompts for common tasks.</p>
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
-                                <th>Command</th>
-                                <th>What It Does</th>
+                                <th>Task</th>
+                                <th>Example Prompt</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><code>/tests</code></td>
-                                <td>Generate unit tests for selected code. Infers framework (Jest, pytest, xUnit).</td>
+                                <td>Add CI pipeline</td>
+                                <td>Create a GitHub Actions workflow that builds and tests on every PR to main</td>
                             </tr>
                             <tr>
-                                <td><code>/tests #file</code></td>
-                                <td>Generate tests for an entire file</td>
+                                <td>Add security scanning</td>
+                                <td>Add a CodeQL security scan step to our CI pipeline, running on every PR</td>
                             </tr>
                             <tr>
-                                <td>Agent mode</td>
-                                <td>"List edge cases for X, then write tests" — safer than just "write tests"</td>
+                                <td>Add deployment</td>
+                                <td>Add a deployment step to staging on merge to main, with manual approval for production</td>
+                            </tr>
+                            <tr>
+                                <td>Matrix builds</td>
+                                <td>Update CI to test against Node 18, 20, and 22 on Ubuntu and Windows</td>
                             </tr>
                         </tbody>
                     </table>
@@ -476,78 +481,101 @@
             </div>
 
             <div class="section">
-                <h3>Test-First Workflow (Recommended)</h3>
-                <p style="margin-bottom: 16px; color: var(--text-muted);">A 3-step mini-recipe:</p>
+                <h3>Fixing Pipeline Failures</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">When a workflow fails, Copilot can diagnose and fix it:</p>
                 <ol class="workflow-steps">
-                    <li>Ask agent to list edge cases and failure modes</li>
-                    <li>Ask agent to write tests that would FAIL if those edge cases are mishandled</li>
-                    <li>Then implement — agent uses test output as feedback loop</li>
+                    <li>Copy the error output from the Actions log</li>
+                    <li>Paste into Copilot Chat: "This GitHub Actions workflow is failing with this error. What's wrong and how do I fix it?"</li>
+                    <li>For complex fixes, use agent mode: "Fix the CI pipeline failure. The error is [X]. Update the workflow YAML and any source files needed."</li>
                 </ol>
-                <p style="margin-top: 20px; margin-bottom: 16px; font-size: 0.9rem; color: var(--text-muted);">Example prompt:</p>
-                <div class="code-block">List edge cases for the payment flow, then write tests
-that would fail if any edge case is mishandled.
-Use xUnit. Include: empty cart, duplicate items,
-out-of-stock, concurrent modification.</div>
+                <p style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted);">Example:</p>
+                <div class="code-block">Our CI pipeline is failing on the deploy step with
+"Error: Resource not accessible by integration."
+Fix the permissions in the workflow YAML. The workflow
+needs to create deployments and write to packages.</div>
             </div>
 
             <div class="section">
-                <h3>Security Testing</h3>
+                <h3>Workflow Patterns</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">Common patterns to ask Copilot to generate:</p>
                 <ul class="security-list">
-                    <li><strong>CodeQL (SAST):</strong> Enable in repo Settings → Code Security. Runs on every push and PR automatically.</li>
-                    <li><strong>Secret Scanning:</strong> Via GitHub MCP Server — detects leaked credentials.</li>
-                    <li><strong>DAST:</strong> StackHawk and Aikido offer Copilot custom agents for dynamic security testing.</li>
+                    <li><strong>PR validation:</strong> Build → Test → Lint → Security scan → Preview deploy</li>
+                    <li><strong>Release pipeline:</strong> Tag trigger → Build → Test → Stage deploy → Smoke tests → Prod deploy (manual gate)</li>
+                    <li><strong>Scheduled maintenance:</strong> Cron trigger → Dependency audit → Auto-PR for updates</li>
+                    <li><strong>Reusable workflows:</strong> Extract common steps into `.github/workflows/` callable workflows</li>
                 </ul>
             </div>
 
             <div class="callout">
-                <div class="callout-title">⚠️ The Self-Rating Trap</div>
-                <p>The AI that wrote the code shouldn't be the only one validating it. Use physics (test runners, linters, type checkers) as your independent verification. Always run the tests — don't just read them.</p>
+                <div class="callout-title">💡 Tip</div>
+                <p>Use `/explain` on existing workflow files before modifying them. Complex YAML with matrix strategies, conditions, and secrets can be hard to parse — let Copilot explain it first.</p>
             </div>
         </div>
 
-        <!-- Right Column: Review -->
+        <!-- Right Column: Infrastructure as Code -->
         <div class="card">
-            <h2>👀 Code Review with Copilot</h2>
+            <h2>🏗️ Infrastructure as Code</h2>
 
             <div class="section">
-                <h3>Automated PR Review</h3>
-                <p style="margin-bottom: 16px; color: var(--text-muted);">How to enable:</p>
-                <ol class="review-steps">
-                    <li>Open any Pull Request</li>
-                    <li>Go to Reviewers → Select "Copilot"</li>
-                    <li>Copilot analyzes the diff, leaves inline comments within minutes</li>
-                </ol>
-                <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">Comments cover: bugs, performance, style, security concerns.</p>
-                <div class="approval-note">
-                    <p><strong>Important:</strong> Copilot reviews leave comments, never approvals. The human always has final say.</p>
+                <h3>IaC Generation</h3>
+                <p style="margin-bottom: 16px; color: var(--text-muted);">Copilot generates infrastructure definitions across providers.</p>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Provider</th>
+                                <th>Format</th>
+                                <th>Example Prompt</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Azure</td>
+                                <td>Bicep / ARM</td>
+                                <td>Generate a Bicep template for an Azure App Service with managed identity, connected to Key Vault</td>
+                            </tr>
+                            <tr>
+                                <td>AWS</td>
+                                <td>CloudFormation / CDK</td>
+                                <td>Create a CloudFormation template for an S3 bucket with versioning and lifecycle policy</td>
+                            </tr>
+                            <tr>
+                                <td>Multi-cloud</td>
+                                <td>Terraform</td>
+                                <td>Generate a Terraform module for a PostgreSQL database with read replicas and SSL</td>
+                            </tr>
+                            <tr>
+                                <td>Kubernetes</td>
+                                <td>YAML manifests</td>
+                                <td>Create a K8s deployment with 3 replicas, health checks, resource limits, and HPA</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
             <div class="section">
-                <h3>Coding Agent PRs</h3>
-                <p style="margin-bottom: 12px;">When the coding agent opens a PR:</p>
-                <ul style="list-style: disc; padding-left: 20px; color: var(--text);">
-                    <li style="margin-bottom: 8px;">Includes summary of changes and reasoning</li>
-                    <li style="margin-bottom: 8px;">Shows full reasoning trace via Copilot session link</li>
-                    <li>Review like any other PR — same standards apply</li>
-                </ul>
+                <h3>IaC Best Practices with AI</h3>
+                <ol class="review-steps">
+                    <li>Start with requirements: "I need [resource] with [constraints]. Generate the IaC."</li>
+                    <li>Ask for validation: "Review this Terraform for security issues and best practices."</li>
+                    <li>Generate tests: "Write Terratest / Bicep What-If tests for this infrastructure."</li>
+                    <li>Use agent mode for complex changes: multi-file updates across modules, variable files, and outputs</li>
+                </ol>
+                <p style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted); margin-top: 16px;">Example:</p>
+                <div class="code-block">Generate a Terraform module for an Azure App Service with:
+- Managed identity (system-assigned)
+- Connected to existing Key Vault (var.keyvault_id)
+- Application Insights for monitoring
+- Deployment slots for blue-green deployment
+- Output the default hostname and managed identity ID</div>
             </div>
 
             <div class="section">
-                <h3>Custom Review Agents</h3>
-                <p style="margin-bottom: 16px; color: var(--text-muted);">Create <code style="background-color: var(--surface-2); padding: 2px 6px; border-radius: 4px;">.agent.md</code> files for domain-specific review:</p>
-                <ul style="list-style: disc; padding-left: 20px; color: var(--text); margin-bottom: 16px;">
-                    <li style="margin-bottom: 8px;"><strong>Accessibility:</strong> "Review all CSS changes for WCAG 2.1 AA compliance"</li>
-                    <li style="margin-bottom: 8px;"><strong>Performance:</strong> "Flag any N+1 query patterns in database calls"</li>
-                    <li><strong>Compliance:</strong> "Check all API endpoints have proper authorization attributes"</li>
-                </ul>
-                <p style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted);">Example .agent.md:</p>
-                <div class="code-block"># Security Review Agent
-Review all changes for:
-- SQL injection vulnerabilities
-- Missing input validation
-- Hardcoded credentials or secrets
-- Missing authorization checks on API endpoints</div>
+                <h3>Custom CI Agents</h3>
+                <div class="approval-note">
+                    <p><strong>Advanced:</strong> Create custom `.agent.md` files for CI-specific review. Example: "Review all changes to .github/workflows/ for: exposed secrets, missing permission scoping, use of deprecated actions, and missing concurrency controls." This catches pipeline misconfigurations before they reach main.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -556,31 +584,31 @@ Review all changes for:
     <div class="resources-section">
         <h2>Self-Paced Resources</h2>
         <div class="resources-grid">
-            <a href="https://github.com/skills/copilot-code-review" class="resource-card" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/skills/hello-github-actions" class="resource-card" target="_blank" rel="noopener noreferrer">
                 <div class="icon">🔗</div>
-                <div class="title">Copilot Code Review</div>
-                <div class="desc">Interactive GitHub Skills course on code review</div>
+                <div class="title">Hello GitHub Actions</div>
+                <div class="desc">Interactive GitHub Skills course on Actions basics</div>
             </a>
-            <a href="https://learn.microsoft.com/en-us/training/modules/create-unit-tests-using-github-copilot-tools/" class="resource-card" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/skills/create-ai-powered-actions" class="resource-card" target="_blank" rel="noopener noreferrer">
                 <div class="icon">🔗</div>
-                <div class="title">Create Unit Tests with Copilot</div>
-                <div class="desc">Microsoft Learn module on test generation</div>
+                <div class="title">Create AI-Powered Actions</div>
+                <div class="desc">Build custom actions with AI assistance</div>
             </a>
-            <a href="https://github.com/skills/secure-code-game" class="resource-card" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/skills/reusable-workflows" class="resource-card" target="_blank" rel="noopener noreferrer">
                 <div class="icon">🔗</div>
-                <div class="title">Secure Code Game</div>
-                <div class="desc">Hands-on security vulnerability challenge</div>
+                <div class="title">Reusable Workflows</div>
+                <div class="desc">Learn to extract and share common workflow patterns</div>
             </a>
-            <a href="https://github.com/skills/introduction-to-codeql" class="resource-card" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/skills/secure-repository-supply-chain" class="resource-card" target="_blank" rel="noopener noreferrer">
                 <div class="icon">🔗</div>
-                <div class="title">Introduction to CodeQL</div>
-                <div class="desc">Learn static analysis for security scanning</div>
+                <div class="title">Secure Repository Supply Chain</div>
+                <div class="desc">Best practices for securing CI/CD pipelines</div>
             </a>
         </div>
     </div>
 
     <div class="footer">
-        <p>Part of the AI-SDLC workshop materials · See also: <a href="onepager-agent-mode.html">Agent Mode &amp; Implementation</a> · <a href="onepager-maintenance.html">Maintenance &amp; Refactoring</a> · <a href="onepager-cicd.html">CI/CD &amp; Actions</a></p>
+        <p>Part of the AI-SDLC workshop materials · See also: <a href="onepager-agent-mode.html">Agent Mode & Implementation</a> · <a href="onepager-testing-review.html">Testing & Review</a> · <a href="onepager-maintenance.html">Maintenance & Refactoring</a></p>
     </div>
 </body>
 </html>
